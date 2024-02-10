@@ -37,7 +37,7 @@ const AUTHOR_AVATAR = content.authorImage ? content.authorImage : SITE?.authorIm
                 { content.tags.length > 0 && content.tags.map(tag => <a class="post__tag" href={`/tags/${tag}`} title={tag}>{tag}</a>) }
             </div>
             <h1 class="post__title">{ content.title }</h1>
-            <h5 class={`post__desc ${AUTHOR_AVATAR ? 'flex flex-row gap-2' : ''}`}>
+            <!-- <h5 class={`post__desc ${AUTHOR_AVATAR ? 'flex flex-row gap-2' : ''}`}>
                 { AUTHOR_AVATAR ? <img class="avatar" src={AUTHOR_AVATAR} alt={`${ AUTHOR_NAME }'s avatar`} /> : ''}
                 <div class={AUTHOR_AVATAR ? 'flex flex-col border-l-2 pl-2' : ''}>
                     {
@@ -48,7 +48,7 @@ const AUTHOR_AVATAR = content.authorImage ? content.authorImage : SITE?.authorIm
                     }
                     {!AUTHOR_AVATAR ? ' | ' : ''}
                     <span class="post__date">
-                        <!-- post creation/updation data -->
+                        
                         { new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date(content.date))}
                     </span>
                     <span class="post__stats">
@@ -57,12 +57,11 @@ const AUTHOR_AVATAR = content.authorImage ? content.authorImage : SITE?.authorIm
                             <Icon class="w-5 h-5 inline-block" pack="mdi" name="eye" />
                             <PostStats slug={meta?.slug} client:load /> 
                         }
-                        <!-- | <Icon class="w-5 h-5 inline-block" pack="mdi" name="clock" /> 2 mins -->
                     </span>
                 </div>
-            </h5>
+            </h5> -->
         </div>
-        {
+        <!-- {
             content.image ?
             USE_POST_IMG_OVERLAY ?
                 <div class="img__outer">
@@ -72,11 +71,11 @@ const AUTHOR_AVATAR = content.authorImage ? content.authorImage : SITE?.authorIm
                 :
                 <img class="img__outer" src={content.image} alt={content.title} /><br/>
                 : ""
-        }
+        } -->
         <Prose>
             <slot />
         </Prose>
-        <div class="post__footer">
+        <!-- <div class="post__footer">
             { USE_AUTHOR_CARD &&
                 <br/>
                 <div class="author-card">
@@ -107,7 +106,7 @@ const AUTHOR_AVATAR = content.authorImage ? content.authorImage : SITE?.authorIm
                 meta?.collection && meta?.id && 
                     <EditUrl label=" Suggest changes on GitHub" editUrl={`${SITE.githubUrl}/tree/main/src/content/${meta?.collection}/${meta?.id}`}/>
             }
-        </div>
+        </div> -->
     </MainLayout>
 </html>
 <style>

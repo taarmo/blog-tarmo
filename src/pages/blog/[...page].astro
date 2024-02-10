@@ -8,7 +8,6 @@ import Paginator from '$/components/Paginator.astro'
 import { PAGE_SIZE } from '$/config'
 
 let title = 'Blog'
-// let description = 'All the articles posted so far...'
 
 export async function getStaticPaths({ paginate }) {
   const allPosts = await getCollection('blog');
