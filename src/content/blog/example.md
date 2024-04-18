@@ -1,17 +1,3 @@
----
-title: example
-date: "2021-04-10"
-image: ''
-author: John Doe
-authorTwitter: ''
-category: design
-tags:
-- architecture
-- front-end
-- spa
-description: An example of a blog post
----
-
 # Inicio de la aventura
 
 En el año 2021, armado con una piedra que eran mis ligeros conocimientos sobre microcontroladores, adquiridos en la universidad ,un palo que era un canal de twitch que decidí abrir para animarme a realizar este tipo de proyectos y con la ayuda de hectorcascos, decidí comenzar un proyecto que ya por aquel entonces establecí en fases.
