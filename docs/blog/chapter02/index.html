@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-ouamjn2i> <head><meta charset="utf-8"><link rel="icon" href="/favicon.ico"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v4.5.10"><title></title><link rel="stylesheet" href="/_astro/chapter01.WDeXwkme.css"></head> <body class="flex min-h-screen bg-white" data-astro-cid-ouamjn2i> <div class="flex flex-col p-12 flex-1" data-astro-cid-ouamjn2i> <div class="flex justify-between"> <a href="/"> <h1><strong>Tarmo</strong></h1> <span class="font-bold text-zinc-500">No se a que te dedicas</span> </a> <div class="flex gap-4"> <a href="https://github.com/taarmo" rel="noreferrer" target="_blank">Github</a> <a href="https://twitter.com/t4rmo" rel="noreferrer" target="_blank">Twitter</a> <a href="https://discord.gg/6cbsQtXGS4" rel="noreferrer" target="_blank">
+Discord</a> </div> </div> <div class="flex flex-col md:flex-row gap-4 py-4" data-astro-cid-ouamjn2i>  <div class="flex flex-col max-w-[750px] m-auto px-2 gap-2"> <h1 class="text-4xl font-bold my-8">Análizando el firmware</h1> <div class="prose dark:prose-invert
+  prose-h1:font-bold prose-h1:text-xl
+  prose-a:text-blue-600 prose-p:text-justify prose-img:rounded-xl
+  prose-p:text-zinc-800 prose-h2:text-zinc-800 text-zinc-800">  <p>Una vez obtenido nuestro volcado de la flash, procedemos con el análisis de las distintas secciones que lo componen, para intentar entender como el router funciona. Para realizar esta tarea, en un primer acercamiento podemos valernos de una herramienta como binwalk, la cual, si utilizamos sobre nuestro volcado, nos proporciona el siguiente resultado:</p>
+<p><img src="/chapter02/binwalk_flash.png" alt="binwalk_flash"></p>
+<p>Como podemos observar binwalk nos aporta un primer resultado, nuestro firmware se componen de 3 secciones, 2 de ellas comprimidas mediante el algoritmo de compresión LZMA, una inicial de tamaño descomprimido 97728 bytes, otra de tamaño descomprimido 3291456 bytes y un sistema de ficheros.</p>
+<p>De este primer resultado, podemos intuir que la segunda particion es el linux comprimido por el tamaño que ocupa y que el sistema de ficheros contiene las distintas aplicaciones que nuestro router utiliza para proveernos de sus servicios.</p>
+<p>¿Y el primer trozo?</p>
+<p>Si dejamos a binwalk que haga su magia</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color:#B392F0">binwalk</span><span style="color:#79B8FF"> -e</span><span style="color:#9ECBFF"> hg532-fullflash_backup2.bin</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"></span></code></pre>
+<p>o mediante 7z o cortando ese trozo con dd y unlzma para descomprimir ese trozo y ver el contenido.
+Y ejecutamos la aplicación de linux strings sobre el trozo descomprimido, obtenemos entre todo los que nos arroja esto:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color:#B392F0"> strings</span><span style="color:#9ECBFF"> hg532_fullflash_backup2.bin</span><span style="color:#E1E4E8"> </span></span>
+<span class="line"></span></code></pre>
+<p><img src="/chapter02/bootloader_strings.png" alt="bootloader_strings"></p>
+<p>Vemos que entre las strings se menciona una linea de texto que nos hace ver que ese trozo tiene que ver con el bootloader de nuestro router.</p>
+<p>Pero… si el bootloader está comprimido en un primer momento ¿Quien se encarga de descomprimirlo a él para que éste sea lo primero que vemos cuando nos conectamos por la uart?</p>
+<p>La respuesta está en que binwwalk reconoce trozos “con cierto formato” en nuestro firmware pero está obviando código importante al inicio de la flash, si observamos bien nuestro bootloader comprimido, éste empieza dentro del volcado de la flash en la dirección 0x21D8 pero… ¿Habrá algo en la dirección 0x0 de nuestra flash?</p>
+<p>La respuesta es que sí</p>  </div> </div>  </div> </div>  </body> </html>
