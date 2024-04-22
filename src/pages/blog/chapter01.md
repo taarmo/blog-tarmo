@@ -14,7 +14,7 @@ draft: false
 En el año 2021, armado con una piedra que eran mis ligeros conocimientos sobre microcontroladores, adquiridos en la universidad ,un palo que era un canal de twitch que decidí abrir para animarme a realizar este tipo de proyectos y con la ayuda de hectorcascos, decidí comenzar un proyecto que ya por aquel entonces establecí en fases.
 El plan era el siguiente, quería aprender "las bases" del hardware hacking, para ello, me autoimpuse conseguir ejecutar el doom y encontrar una vulnerabilidad que explotar en un router antiguo (hg532s) que tenía por casa.
 
-![workflow](/chapter01/workflow.png)
+![workflow](/blog-tarmo/chapter01/workflow.png)
 
 Sobre la primera parte del plan no tenía muy claro por donde empezar, y sobre la segunda mis conocimientos sobre ingeniería inversa no eran más que algunas incursiones que había hecho a los tutoriales de ricardo narvaja y al canal de liveoverflow.
 
@@ -28,7 +28,7 @@ Con el fin de comunicarte con los niveles adecuados de tensión con la memoria d
 
 Un circuito elemental para esta tarea es el divisor de tensión, si quieres obtener una tensión B y tienes una tensión A basta de 2 resistencias en serie con los valores adecuados para obtener la tensión B en bornas de la segunda resistencia. 
 
-![div_res_rl](/chapter01/div_res_rl.png)
+![div_res_rl](/blog-tarmo/chapter01/div_res_rl.png)
 
 Siendo I la corriente que atraviesa las dos resistencias
 
@@ -43,13 +43,13 @@ Este sistema de convertir de una tensión a otra es sencillo pero tiene problema
 
 Aprovechandonos de la función de "interruptor" que nos proporcionan los transistores otro posible diseño es el siguiente:
 
-![mosfet](/chapter01/mosfet.png)
+![mosfet](/blog-tarmo/chapter01/mosfet.png)
 
 Siendo Vref el nivel de tensión que queremos obtener y que fijaremos mediante una fuente de alimentación. Al aplicar una tensión Vg que provoque que la tensión Vgs sea superior a la tensión Vgsoff o Vp(presente en la datasheet del mosfet) lo que haremos es que el transistor se sature lo que provoca que a efectos prácticos el transistor se comporte como un cortocircuito entre su terminal de drenador (el de arriba) y el terminal de fuente (el conectado a masa) lo que es lo mismo un 0 lógico. Mientras que siempre que la tensión Vg, provoque que la tensión Vgs sea menor que la tensión Vgsoff la corriente Id irá por el cable de salida obteniendo Vref un 1 lógico con lo que con un lenguaje mas informal si por Vg hay señal por la salida no hay y si por Vg no hay por la salida si hay con el nivel de tensión adecuado. 
 
 Este convertidor tiene 2 problemas uno que el valor de la resistencia tiene que ajustarse para tener los niveles de corriente adecuados, lo cual a priori no es mas que $R= {Vref \over I}$ y otro y fundamental y es que los la señal que obtenemos a la salida es la negada de la entrada con el nivel de tensión que queremos, este defecto se puede solucionar encadenando otro transistor para conseguir una puerta not analógica lo cual ya necesita de 2 transistores o jugando con las tensiones del transistor y la forma de alimentarlo de la siguiente forma:
 
-![mosfet2](/chapter01/mosfet_2.png)
+![mosfet2](/blog-tarmo/chapter01/mosfet_2.png)
  
 Utilizando un modelo de mosfet con diodo incorporado, los cuales son bastante comunes, si conectamos los terminales Vref a una fuente de alimentación con el nivel de tensión que deseamos obtener y conectando Vin a nuestra señal a convertir, nos vemos en dos situaciones, la primera es que la señal Vin esté a nivel bajo, lo que provoca que el diodo conduzca, estableciendo asi la tensión Vout a nivel bajo, y por otro lado si la tensióñ Vin está a nivel alto, el mosfet está cortado y el diodo también por lo tanto por Vout obtenemos Vref.
 
@@ -59,13 +59,13 @@ Existen infinidad de sistemas para convertir niveles de tensión desde con diodo
 
 Ni que decir cabe que ya existen integrados que realizan esta conversión sin tener que pelearnos con elementos discretos analógicos.
 
-![convertidor](/chapter01convertidor.png)
+![convertidor](/blog-tarmo/chapter01convertidor.png)
 
 ## Leer la flash
 
 Si dedicamos 2 minutos a observar el hardware de nuestro router desmontado, podemos observar 5 chips que destacan sobre el resto, si buscamos información sobre cada uno de ellos, es fácil averiguar cual es la memoria encargada de almacenar el firmware de nuestro router.
 
-![board_hg532](/chapter01/board_hg532.jpg)
+![board_hg532](/blog-tarmo/chapter01/board_hg532.jpg)
 
 Dato importante: *A la hora de buscar información sobre un producto si éste emite información de forma inalámbrica debe tener un número FCCID que se puede buscar, donde está registrado cierta información sobre el mismo* https://fccid.io/
 
@@ -76,7 +76,7 @@ En nuestro caso nuestra memoria flash (S25FL064PIF) funciona con niveles de tens
 
 En mas de un tutorial he visto a gente utilizar unas pinzas como estas conectadas a su microcontrolador favorito
 
- ![pinzas_flash](/chapter01/pinzas_flash.png)
+ ![pinzas_flash](/blog-tarmo/chapter01/pinzas_flash.png)
 
 Esta práctica aunque a priori parece cómoda hay que tener una serie de consideraciones antes de emplearla.
 
@@ -84,7 +84,7 @@ Estamos interactuando en un sistema en que la flash está conectada a más cosas
 
 Cabe destacar que la memoria durante este proceso no debe interferir con nuestro programador, es decir, si ésta mientras intentamos comunicarnos con ella, está comunicandose con la cpu o con otro periférico es probable que no sea posible la adecuada comunicación.
 
-![diagram1](/chapter01/diagram1.png)
+![diagram1](/blog-tarmo/chapter01/diagram1.png)
 
 Otra forma de evitar este problema es cortar la alimentación de la memoria flash del resto del router, este sistema se puede realizar de forma mas o menos sofisticada, yo con ayuda de RealDjChicle corté con un bisturí la linea de la pcb que alimentaba la flash y soldando entre cada extremo un interruptor que me permitiera aislarla o no en función de si queria reprogramarla o que la usara el router.
 
@@ -98,7 +98,7 @@ Una forma de recrearlos es utilizando un uC con sus GPIO o mediante una FPGA. El
 
 El utilizar un microcontrolador es otra opcion pero existen opciones mas sencillas y baratas, es por ello que me decanté por un dispositivo de la familia ft232h que lo puedes encontrar por no mas de 3 euros
 
-![ft232h](/chapter01/ft232h.png)
+![ft232h](/blog-tarmo/chapter01/ft232h.png)
 
 El ftdi232h no es mas que un convertidor usb-serie y viceversa y su uso es tan sencillo como desde python utilizar la libreria pyftdi para poder comunicarnos con nuestra placa.
 
@@ -106,11 +106,11 @@ Es cierto que con el propio ftdi232h existe software que ya realiza esta tarea p
 
 Si nos fijamos en la datasheet de nuestra memoria flash, podemos observar que una operacion de lectura se realiza de la siguiente forma:
 
-![readop](/chapter01/readop.png)
+![readop](/blog-tarmo/chapter01/readop.png)
 
 Como hemos comentado se trata del protocolo SPI, éste tiene una señal de reloj, que marca en que ciclos y como se debe realizar la comunicación con la memoria. En este caso en concreto se marca que durante los 8 primeros ciclos de la señal SCLK lo que se envie por el pin MOSI será el comando de lectura, que si buscamos en la propia datasheet no es más que enviar un 0x3, seguido de la dirección que se quiere leer que están establecidas en la datasheet, y ésta entregará el valor en esa dirección por el pin MISO
 
-![readop2](/chapter01/readop2.png)
+![readop2](/blog-tarmo/chapter01/readop2.png)
 
 Con ayuda de la documentación de la API de la librería pyftdi
 *https://eblot.github.io/pyftdi/*, podemos realizar nuestro script con el que leer nuestra memoria
@@ -157,7 +157,7 @@ A parte del protocolo spi empleado para comunicarse la cpu con la memoria flash 
 
 Sobre estos temas de como encontrar este tipo de pines que tengan esa funcionalidad, existen herramientas que automatizan esta tarea, aun sin disponer de estas herramientas existen formas artesanales de encontrar este tipo de pines. En general un primer acercamiento a buscar este tipo de pines suele ser buscar en la pcb si existe algun indicio de alguna conexión que no está soldada, en nuestro caso, existe una hilera que alguien antes que nosotros se ha encargado de documentar e indicar que corresponde con la UART.
 
-![hg532s-uart](/chapter01/hg532s-uart.jpg)
+![hg532s-uart](/blog-tarmo/chapter01/hg532s-uart.jpg)
 
 En caso de no estar tan visible, existen formas valiéndonos del multímetro para la búsqueda de ciertos valores de referencia.
 
