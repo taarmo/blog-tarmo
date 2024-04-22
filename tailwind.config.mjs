@@ -4,5 +4,9 @@ export default {
   theme: {
     extend: {}
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography')],
+  purge: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './public/index.html'
+  ]
 }
