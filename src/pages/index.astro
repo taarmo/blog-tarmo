@@ -1,48 +1,53 @@
 ---
-export const prerender = true;
-
-import PostPreviewList from '$/components/PostPreviewList.astro';
-import DefaultPageLayout from '$/layouts/default.astro';
-import { getCollection } from 'astro:content';
-
-const title = 'Home';
-const description =
-	'Programación competitiva, Hacking a veces';
-
-const posts = await getCollection('blog');
+import Card from '../layouts/Card.astro'
+import MainLayout from '../layouts/MainLayout.astro'
+import projects from '../projects'
+const posts = await Astro.glob('../pages/blog/*.md')
 ---
 
-<DefaultPageLayout content={{ title, description }} showPageHeader={false}>
-
-	<hr />
-	<PostPreviewList posts={posts.slice(0, 3)} heading='articulos recientes' />
-	<div class='page__actions'>
-		<a class='action__go-to-blog ink-h' href='/blog' title='All Posts'
-			>Todos &rarr;</a
-		>
-	</div>
-</DefaultPageLayout>
-
-<style>
-	.hero {
-		@apply flex flex-col md:flex-row gap-8 w-full transition-all pb-4;
-	}
-	.hero__face {
-		@apply flex md:flex-none justify-center;
-	}
-	.hero__says {
-		@apply flex-1 text-center md:text-left;
-	}
-	.author-card {
-		@apply h-48 w-48 md:h-56 bg-theme-primary dark:bg-theme-dark-primary rounded-full md:rounded-md shadow-lg;
-	}
-	.author-card img {
-		@apply rounded-full h-48 w-48 md:h-56;
-	}
-	.page__actions {
-		@apply flex justify-center md:justify-end py-6;
-	}
-	.action__go-to-blog {
-		@apply py-4 hover:underline;
-	}
-</style>
+<MainLayout title='Tarmo'>
+  <div class='max-w-1/2 flex-1'>
+    <span class='text-zinc-700'><strong>Projects 🧱</strong></span>
+    <div class='py-4'>
+      <ul class='gap-4 flex flex-col'>
+        {
+          projects.map((project) => (
+            <li class='flex w-full flex-col'>
+              <a href={project.href} rel='noreferrer' target='_blank'>
+                <Card
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div class='max-w-1/2 flex-1'>
+    <span class='text-zinc-700'
+      ><strong>Blog 📒</strong>
+      <div class='py-4'>
+        <ul class='gap-4 flex flex-col'>
+          {
+            posts
+              .filter((post) => post.frontmatter.draft === false)
+              .map((post) => (
+                <li class='flex w-full flex-col'>
+                  <a href={post.url}>
+                    <Card
+                      title={post.frontmatter.title}
+                      description={post.frontmatter.description}
+                      tags={post.frontmatter.tags}
+                    />
+                  </a>
+                </li>
+              ))
+          }
+        </ul>
+      </div>
+    </span>
+  </div>
+</MainLayout>
