@@ -13,7 +13,7 @@ layout: ../../layouts/PostLayout.astro
 
 Una vez obtenido nuestro volcado de la flash, procedemos con el análisis de las distintas secciones que lo componen, para intentar entender como el router funciona. Para realizar esta tarea, en un primer acercamiento podemos valernos de una herramienta como binwalk, la cual, si utilizamos sobre nuestro volcado, nos proporciona el siguiente resultado:
 
-![binwalk_flash](/blog-tarmo/chapter02/binwalk_flash.png)
+![binwalk_flash](/chapter02/binwalk_flash.png)
 
 Como podemos observar binwalk nos aporta un primer resultado, nuestro firmware se componen de 3 secciones, 2 de ellas comprimidas mediante el algoritmo de compresión LZMA, una inicial de tamaño descomprimido 97728 bytes, otra de tamaño descomprimido 3291456 bytes y un sistema de ficheros.
 
@@ -32,7 +32,7 @@ Y ejecutamos la aplicación de linux strings sobre el trozo descomprimido, obten
  strings hg532_fullflash_backup2.bin 
 ``` 
 
-![bootloader_strings](/blog-tarmo/chapter02/bootloader_strings.png)
+![bootloader_strings](/chapter02/bootloader_strings.png)
 
 Vemos que entre las strings se menciona una linea de texto que nos hace ver que ese trozo tiene que ver con el bootloader de nuestro router.
 
