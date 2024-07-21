@@ -1,26 +1,26 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro'
-import projects from '../../projects'
+const posts = await Astro.glob('../../pages/blog/*.md')
 import Card from '../../layouts/Card.astro'
 ---
 
 <MainLayout title='Tarmo'>
   <div class='py-4'>
-    <ul class='gap-4 flex flex-row max-w-xl'>
+    <ul class='gap-4 flex flex-row max-w-7xl	'>
       {
-        projects.map((project) => (
-          
-          <li class='flex w-full flex-col'>
-            <a href={project.href} rel='noreferrer' target='_blank'>
-              <Card
-                title={project.title}
-                description={project.description}
-                tags={project.tags}
-                urlImage={project.urlImage}
-              />
-            </a>
-          </li>
-        ))
+        posts
+          .filter((post) => post.frontmatter.draft === false)
+          .map((post) => (
+            <li class='flex w-full flex-col'>
+              <a href={post.url}>
+                <Card
+                  title={post.frontmatter.title}
+                  description={post.frontmatter.description}
+                  tags={post.frontmatter.tags}
+                />
+              </a>
+            </li>
+          ))
       }
     </ul>
   </div>

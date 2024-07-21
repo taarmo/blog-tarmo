@@ -3,21 +3,23 @@ import Card from '../layouts/Card.astro'
 import MainLayout from '../layouts/MainLayout.astro'
 import projects from '../projects'
 const posts = await Astro.glob('../pages/blog/*.md')
-
 ---
 
 <MainLayout title='Tarmo'>
   <div>
-    <div  class="flex w-full justify-between	">
-      <span class='text-zinc-700'><strong>— Most popular projects —</strong></span>
-      <span class='text-zinc-700'><strong>See All Projects -></strong></span>
+    <div class='flex w-full justify-between'>
+      <span class='text-zinc-700'
+        ><strong>— Most popular projects —</strong></span
+      >
+      <a href='./projects'>
+        <span class='text-zinc-700'><strong>See All Projects -></strong></span>
+      </a>
     </div>
-    
+
     <div class='py-4'>
       <ul class='gap-4 flex flex-row max-w-xl'>
         {
           projects.map((project) => (
-            
             <li class='flex w-full flex-col'>
               <a href={project.href} rel='noreferrer' target='_blank'>
                 <Card
@@ -33,18 +35,20 @@ const posts = await Astro.glob('../pages/blog/*.md')
       </ul>
     </div>
   </div>
-  
+
   <div>
-    <div  class="flex w-full justify-between	">
-      <span class='text-zinc-700'><strong>— Most popular articles —</strong></span>
-      <a href="./blog">
+    <div class='flex w-full justify-between'>
+      <span class='text-zinc-700'
+        ><strong>— Most popular articles —</strong></span
+      >
+      <a href='./blog'>
         <span class='text-zinc-700'><strong>See All Articles -></strong></span>
       </a>
     </div>
 
     <span class='text-zinc-700'>
       <div class='py-4'>
-        <ul class='gap-4 flex flex-row max-w-7xl	'>
+        <ul class='gap-4 flex flex-row max-w-7xl'>
           {
             posts
               .filter((post) => post.frontmatter.draft === false)
