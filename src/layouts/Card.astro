@@ -1,15 +1,17 @@
 ---
-const { title, description, tags } = Astro.props
+import { Image } from 'astro:assets';
+const { title, description, tags, urlImage } = Astro.props
 ---
 
 <div class='flex py-4 px-4 flex-col gap-2 border rounded-md'>
+  <!-- <Image src={urlImage} alt="project thumbnail" width={34} height={34}/> -->
   <span class='text-zinc-500 text-lg'><strong>{title}</strong></span>
   <span>{description}</span>
   {
     tags ? (
       <div class='flex w-full gap-2'>
         {tags.map((tag: string) => (
-          <span class='text-sm px-2 py-1 border rounded-md bg-slate-200'>
+          <span class='text-sm px-2 py-1 border rounded-md bg-slate-200 '>
             {tag}
           </span>
         ))}
