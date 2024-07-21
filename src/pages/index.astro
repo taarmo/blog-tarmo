@@ -37,7 +37,9 @@ const posts = await Astro.glob('../pages/blog/*.md')
   <div>
     <div  class="flex w-full justify-between	">
       <span class='text-zinc-700'><strong>— Most popular articles —</strong></span>
-      <span class='text-zinc-700'><strong>See All Articles -></strong></span>
+      <a href="./blog">
+        <span class='text-zinc-700'><strong>See All Articles -></strong></span>
+      </a>
     </div>
 
     <span class='text-zinc-700'>
